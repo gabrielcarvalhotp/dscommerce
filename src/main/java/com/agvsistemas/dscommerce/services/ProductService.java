@@ -1,6 +1,7 @@
 package com.agvsistemas.dscommerce.services;
 
 import com.agvsistemas.dscommerce.dto.ProductDTO;
+import com.agvsistemas.dscommerce.entities.Category;
 import com.agvsistemas.dscommerce.entities.Product;
 import com.agvsistemas.dscommerce.exceptions.DatabaseException;
 import com.agvsistemas.dscommerce.exceptions.ResourceNotFoundException;
