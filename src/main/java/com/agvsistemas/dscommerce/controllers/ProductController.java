@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,18 +34,21 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     private ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO dto) {
         var product = productService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
     @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     private ResponseEntity<ProductDTO> update(@PathVariable Long id,@Valid @RequestBody ProductDTO dto) {
         var product = productService.update(id, dto);
         return ResponseEntity.ok(product);
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     private ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();

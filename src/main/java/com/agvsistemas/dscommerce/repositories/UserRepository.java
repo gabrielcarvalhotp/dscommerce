@@ -1,14 +1,23 @@
 package com.agvsistemas.dscommerce.repositories;
 
 import com.agvsistemas.dscommerce.entities.User;
+import com.agvsistemas.dscommerce.projections.UserDetailsProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT obj FROM User obj JOIN FETCH obj.roles WHERE obj.email = :email")
-    User searchUserWithRolesByEmail(String email);
+    @Query(nativeQuery = true, value = """
+			SELECT tb_user.email AS username, tb_user.password, tb_role.id AS roleId, tb_role.authority
+			FROM tb_user
+			INNER JOIN tb_user_role ON tb_user.id = tb_user_role.user_id
+			INNER JOIN tb_role ON tb_role.id = tb_user_role.role_id
+			WHERE tb_user.email = :email
+		""")
+    List<UserDetailsProjection> searchUserWithRolesByEmail(String email);
 
 }
