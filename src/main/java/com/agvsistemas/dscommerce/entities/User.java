@@ -10,14 +10,18 @@ import java.util.*;
 @Entity
 @Table(name = "tb_user")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column(unique = true)
     private String email;
     private String phone;
     private LocalDate birthDate;
     private String password;
+
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 
@@ -27,7 +31,8 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User() {}
+    public User() {
+    }
 
     public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
         this.id = id;
@@ -92,6 +97,10 @@ public class User implements UserDetails {
         return email;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -135,13 +144,16 @@ public class User implements UserDetails {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         User user = (User) o;
+
         return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return id != null ? id.hashCode() : 0;
     }
 }
