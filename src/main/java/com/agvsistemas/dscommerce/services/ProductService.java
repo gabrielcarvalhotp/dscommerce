@@ -1,6 +1,7 @@
 package com.agvsistemas.dscommerce.services;
 
 import com.agvsistemas.dscommerce.dto.ProductDTO;
+import com.agvsistemas.dscommerce.dto.ProductMinDTO;
 import com.agvsistemas.dscommerce.entities.Product;
 import com.agvsistemas.dscommerce.exceptions.DatabaseException;
 import com.agvsistemas.dscommerce.exceptions.ResourceNotFoundException;
@@ -28,9 +29,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable) {
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
         Page<Product> result = repository.searchByName(name, pageable);
-        return result.map(ProductDTO::new);
+        return result.map(ProductMinDTO::new);
     }
 
     @Transactional
