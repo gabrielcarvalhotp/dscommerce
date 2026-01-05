@@ -3,6 +3,7 @@ package com.agvsistemas.dscommerce.dto;
 import com.agvsistemas.dscommerce.entities.Order;
 import com.agvsistemas.dscommerce.entities.OrderStatus;
 import com.agvsistemas.dscommerce.entities.Payment;
+import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 
 import java.time.Instant;
@@ -15,6 +16,8 @@ public class OrderDTO {
     private OrderStatus status;
     private ClientDTO client;
     private PaymentDTO payment;
+
+    @NotEmpty(message = "A lista de items não pode estar vazia")
     private final List<OrderItemDTO> items = new ArrayList<>();
 
     public OrderDTO() {
