@@ -1,13 +1,12 @@
 package com.agvsistemas.dscommerce.services;
 
 import com.agvsistemas.dscommerce.dto.OrderDTO;
-import com.agvsistemas.dscommerce.dto.ProductDTO;
 import com.agvsistemas.dscommerce.entities.*;
+import com.agvsistemas.dscommerce.exceptions.ForbiddenException;
 import com.agvsistemas.dscommerce.exceptions.ResourceNotFoundException;
 import com.agvsistemas.dscommerce.repositories.OrderItemRepository;
 import com.agvsistemas.dscommerce.repositories.OrderRepository;
 import com.agvsistemas.dscommerce.repositories.ProductRepository;
-import com.agvsistemas.dscommerce.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,18 +20,22 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
-    public OrderDTO findById(Long id) {
+    public OrderDTO findById(Long id) throws ForbiddenException {
         Order order = orderRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado"));
+        authService.validateIsMySelfOrAdmin(order.getClient().getId());
         return new OrderDTO(order);
     }
 
