@@ -1,10 +1,7 @@
 package com.agvsistemas.dscommerce.dto;
 
 import com.agvsistemas.dscommerce.entities.Product;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +17,13 @@ public class ProductDTO {
     @Size(min = 10, message = "Descrição precisa ter no mínimo 10 caracteres")
     @NotBlank(message = "Campo requerido")
     private String description;
-    
+
+    @NotNull(message = "O preço deve ser preenchido")
     @Positive(message = "O preço deve ser positivo")
     private Double price;
     
     private String imgUrl;
 
-    @NotBlank(message = "O preço deve ser preenchido")
     @NotEmpty(message = "A lista de categorias não pode estar vazia")
     private final List<CategoryDTO> categories = new ArrayList<>();
 
