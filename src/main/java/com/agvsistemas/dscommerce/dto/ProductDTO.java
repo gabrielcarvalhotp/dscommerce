@@ -26,6 +26,7 @@ public class ProductDTO {
     
     private String imgUrl;
 
+    @NotBlank(message = "O preço deve ser preenchido")
     @NotEmpty(message = "A lista de categorias não pode estar vazia")
     private final List<CategoryDTO> categories = new ArrayList<>();
 
